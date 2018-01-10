@@ -13,7 +13,7 @@ def get(url, params):
   req = requests.get(url, params)
   return req.json()
 
-token = "xoxp-150069085396-150031593506-296521270242-67db28316330e71ab947265b54b3f02f"
+token = ""
 params = {'token' : token}
 
 print("channel is private or public? 1:private, 2:public")
