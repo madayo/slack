@@ -8,12 +8,13 @@
 import requests
 import json
 import time
+from settings import SLACK_API_TOKEN
 
 def get(url, params):
   req = requests.get(url, params)
   return req.json()
 
-token = ""
+token = SLACK_API_TOKEN
 params = {'token' : token}
 
 print("channel is private or public? 1:private, 2:public")
