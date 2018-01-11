@@ -18,7 +18,7 @@ token = SLACK_API_TOKEN
 params = {'token' : token}
 
 print("channel is private or public? 1:private, 2:public")
-target = "groups" if input("input number >> ") == 1 else "channels"
+target = "groups" if input("input number >> ") == "1" else "channels"
 
 data = get("https://slack.com/api/%s.list" % target, params)
 
