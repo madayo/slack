@@ -15,7 +15,7 @@ def get(url, params):
   return req.json()
 
 token = SLACK_API_TOKEN
-params = {'token' : token}
+params = {"token" : token}
 
 print("channel is private or public? 1:private, 2:public")
 target = "groups" if input("input number >> ") == "1" else "channels"
@@ -24,18 +24,17 @@ data = get("https://slack.com/api/%s.list" % target, params)
 
 for i, d in enumerate(data[target]):
   print(str(i+1) + " --> " +d["name"])
-channel = int(input('input number >> ')) - 1
+channel = int(input("input number >> ")) - 1
 channel = data[target][channel]["id"]
 
-params.update({"channel" : channel})
+params = {"token" : token, "channel" : channel, "count" : 1000 }
 data = get("https://slack.com/api/%s.history" % target, params)
-for d in data['messages']:
+for d in data["messages"]:
  # スター付きは削除しない
   if "is_starred" in d and d["is_starred"]:
     continue
 
-  delete_params = params
-  delete_params.update({"ts" : d["ts"]})
+  delete_params = {"token" : token, "channel" : channel, "ts" : d["ts"]}
   result = get("https://slack.com/api/chat.delete", delete_params)
   print(result)
   # 連続で送りすぎるとエラーになるので1秒待機
