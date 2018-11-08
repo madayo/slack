@@ -1,31 +1,20 @@
 #coding: utf-8
 
-# slackのメッセージを一括削除する
-# private, publicどちらにも対応しており、対話式で削除対象とするチャンネルを指定する。
-# starがついているものは削除対象外
-# 実行前にプログラム内のtoken変数に適切な値を入力すること https://api.slack.com/custom-integrations/legacy-tokens
-# 実行前に自身のIDを確認してuser変数に適切な値を入力すること https://api.slack.com/methods/users.profile.get/test 画面右下くらいに@{自身のアカウント}リンクが表示されているのでクリックすることでIDを確認
-import urllib
-import urllib2
+# 自身がアップロードしたファイルを一括で削除する
+import requests
 import json
 import time
+from settings import SLACK_API_TOKEN, USER_ID
 
-def curl(url, params):
-  params = urllib.urlencode(params)
-  req = urllib2.Request(url)
-  req.add_header('Content-Type', 'application/x-www-form-urlencoded')
-  req.add_data(params)
+def get(url, params):
+  req = requests.get(url, params, headers={'Content-Type' : 'application/x-www-form-urlencoded'})
+  return req.json()
 
-  res = urllib2.urlopen(req)
+token = SLACK_API_TOKEN
+params = { 'token' : token, 'count' : 1000, 'user' : USER_ID}
 
-  body = res.read()
-  return json.loads(body)
-
-token = ''
-user  = ''
-
-data = curl("https://slack.com/api/files.list" , { 'token' : token, 'count' : 1000, 'user' : user })
+data = get("https://slack.com/api/files.list" , params)
 
 for i, d in enumerate(data['files']):
-  result = curl("https://slack.com/api/files.delete", { 'token' : token, 'file' : d['id'] })
-  print result
+  result = get("https://slack.com/api/files.delete", { 'token' : token, 'file' : d['id'] })
+  print(result)

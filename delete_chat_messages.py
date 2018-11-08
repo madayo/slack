@@ -3,7 +3,6 @@
 # slackのメッセージを一括削除する
 # private, publicどちらにも対応しており、対話式で削除対象とするチャンネルを指定する。
 # starがついているものは削除対象外
-# 実行前にプログラム内のtoken変数に適切な値を入力すること https://api.slack.com/custom-integrations/legacy-tokens
 
 import requests
 import json
